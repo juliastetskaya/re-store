@@ -1,11 +1,9 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import withBookstoreService from '../hoc';
+import BookList from '../book-list';
 
-const homePage = (route) => {
-  console.log(route);
-  return (
-    <div>Home Page</div>
-  );
-};
+const homePage = ({ bookstoreService }) => (
+  <BookList books={bookstoreService.getBooks()} />
+);
 
-export default withRouter(homePage);
+export default withBookstoreService()(homePage);

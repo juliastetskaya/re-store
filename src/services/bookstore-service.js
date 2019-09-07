@@ -10,7 +10,7 @@ export default class BookstoreService {
         id: 2,
         title: 'Steve Jobs',
         author: 'Walter Isaacson',
-      }
+      },
     ];
   }
 }
