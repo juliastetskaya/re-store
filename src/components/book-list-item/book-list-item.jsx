@@ -14,8 +14,7 @@ const BookListItem = ({ book }) => {
         <a href="#1" className="book-title">{title}</a>
         <div className="book-author">{author}</div>
         <div className="book-price">
-          $
-          {price}
+          ${price}
         </div>
         <button className="btn btn-info add-to-cart" type="button">Add to cart</button>
       </div>
