@@ -14,14 +14,14 @@ const updateCartItems = (cartItems, item, index) => {
     ];
   }
 
-  const cartWithoutCartItem = cartItems.filter(({ id }) => id !== item.id);
   return [
-    ...cartWithoutCartItem,
+    ...cartItems.slice(0, index),
     item,
+    ...cartItems.slice(index + 1),
   ];
 };
 
-const updateItem = (book, item = {}) => {
+const updateItem = (book, item = {}, quantity) => {
   const {
     id = book.id,
     title = book.title,
@@ -29,11 +29,29 @@ const updateItem = (book, item = {}) => {
     total = 0,
   } = item;
 
+  const newCount = count + quantity;
+  const newTotal = total + book.price * quantity;
+
   return {
     id,
     title,
-    count: count + 1,
-    total: total + book.price,
+    count: newCount > 1 ? newCount : 1,
+    total: newTotal > book.price ? newTotal : book.price,
+  };
+};
+
+const updateOrder = (state, bookId, quantity) => {
+  const { cartItems, books } = state;
+
+  const itemIndex = cartItems.findIndex(({ id }) => id === bookId);
+  const cartItem = cartItems[itemIndex];
+  const book = books.find(({ id }) => id === bookId);
+
+  const newItem = updateItem(book, cartItem, quantity);
+
+  return {
+    ...state,
+    cartItems: updateCartItems(cartItems, newItem, itemIndex),
   };
 };
 
@@ -60,21 +78,21 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: true,
       };
+
     case 'BOOK_ADDED_TO_CART': {
-      const bookId = action.payload;
-      const { cartItems, books } = state;
+      return updateOrder(state, action.payload, 1);
+    }
 
-      const itemIndex = cartItems.findIndex(({ id }) => id === bookId);
-      const cartItem = cartItems[itemIndex];
-      const book = books.find(({ id }) => id === bookId);
+    case 'BOOK_REMOVED_FROM_CART': {
+      return updateOrder(state, action.payload, -1);
+    }
 
-      const newItem = updateItem(book, cartItem);
-
+    case 'ALL_BOOKS_REMOVED_FROM_CART':
       return {
         ...state,
-        cartItems: updateCartItems(cartItems, newItem, itemIndex),
+        cartItems: state.cartItems.filter(({ id }) => id !== action.payload),
       };
-    }
+
     default:
       return state;
   }
