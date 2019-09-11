@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 const ShopHeader = ({ numItems, total }) => (
   <header className="shop-header row">
-    <Link to="/">
+    <Link to="/" className="logo-link">
       <div className="logo text-dark">ReStore</div>
     </Link>
-    <Link to="/cart">
+    <Link to="/cart" className="shopping-cart-link">
       <div className="shopping-cart">
         <i className="cart-icon fa fa-shopping-cart" />
         {numItems} items (${total})

@@ -11,6 +11,11 @@
   padding-left: 1rem;
 }
 
+.shop-header .logo-link:hover,
+.shop-header .shopping-cart-link:hover {
+  text-decoration: none;
+}
+
 .shop-header .shopping-cart {
   align-self: center;
   font-size: 1.3rem;

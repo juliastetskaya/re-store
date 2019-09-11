@@ -13,6 +13,8 @@ const updateCartItems = (cartItems, item, index) => {
   ];
 };
 
+const updateOrderTotal = (cart) => cart.reduce((acc, item) => acc + item.total, 0);
+
 const updateItem = (book, item = {}, quantity) => {
   const {
     id = book.id,
@@ -41,9 +43,12 @@ const updateOrder = (state, bookId, quantity) => {
 
   const newItem = updateItem(book, cartItem, quantity);
 
+  const newCart = updateCartItems(cartItems, newItem, itemIndex);
+  const newOrderTotal = updateOrderTotal(newCart);
+
   return {
-    orderTotal: 0,
-    cartItems: updateCartItems(cartItems, newItem, itemIndex),
+    orderTotal: newOrderTotal,
+    cartItems: newCart,
   };
 };
 
@@ -64,10 +69,15 @@ const updateShoppingCart = (state, action) => {
       return updateOrder(state, action.payload, -1);
     }
 
-    case 'ALL_BOOKS_REMOVED_FROM_CART':
+    case 'ALL_BOOKS_REMOVED_FROM_CART': {
+      const newCart = state.shoppingCart.cartItems.filter(({ id }) => id !== action.payload);
+      const newOrderTotal = updateOrderTotal(newCart);
       return {
-        cartItems: state.shoppingCart.cartItems.filter(({ id }) => id !== action.payload),
+        orderTotal: newOrderTotal,
+        cartItems: newCart,
       };
+    }
+
     default:
       return state.shoppingCart;
   }
