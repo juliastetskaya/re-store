@@ -42,12 +42,10 @@ const updateOrder = (state, bookId, quantity) => {
   const book = books.find(({ id }) => id === bookId);
 
   const newItem = updateItem(book, cartItem, quantity);
-
   const newCart = updateCartItems(cartItems, newItem, itemIndex);
-  const newOrderTotal = updateOrderTotal(newCart);
 
   return {
-    orderTotal: newOrderTotal,
+    orderTotal: updateOrderTotal(newCart),
     cartItems: newCart,
   };
 };
@@ -71,9 +69,9 @@ const updateShoppingCart = (state, action) => {
 
     case 'ALL_BOOKS_REMOVED_FROM_CART': {
       const newCart = state.shoppingCart.cartItems.filter(({ id }) => id !== action.payload);
-      const newOrderTotal = updateOrderTotal(newCart);
+
       return {
-        orderTotal: newOrderTotal,
+        orderTotal: updateOrderTotal(newCart),
         cartItems: newCart,
       };
     }

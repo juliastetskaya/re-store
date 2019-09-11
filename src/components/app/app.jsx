@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ShopHeader from '../shop-header';
 import { HomePage, CartPage } from '../pages';
 
-const App = () => (
+const App = ({ cartItems: items, orderTotal: total }) => (
   <main role="main" className="container">
-    <ShopHeader numItems={5} total={210} />
+    <ShopHeader numItems={items.reduce((acc, item) => acc + item.count, 0)} total={total} />
     <div className="container">
       <Switch>
         <Route
@@ -22,4 +23,8 @@ const App = () => (
   </main>
 );
 
-export default App;
+const mapStateToProps = ({ shoppingCart: { cartItems, orderTotal } }) => (
+  { cartItems, orderTotal }
+);
+
+export default connect(mapStateToProps)(App);
