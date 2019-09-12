@@ -58,7 +58,7 @@ const updateShoppingCart = (state, action) => {
 
     if (cartFromLocalStorage) {
       const cart = JSON.parse(cartFromLocalStorage);
-      console.log(cartFromLocalStorage);
+
       return {
         cartItems: cart,
         orderTotal: updateOrderTotal(cart),

@@ -42,6 +42,10 @@ const ShoppingCartTable = ({
     );
   };
 
+  if (items.length === 0) {
+    return <h2 className="shopping-cart-table">Your Cart is Empty!</h2>;
+  }
+
   return (
     <div className="shopping-cart-table">
       <h2>Your Order</h2>
