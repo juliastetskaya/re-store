@@ -11,6 +11,10 @@
   padding-left: 1rem;
 }
 
+.shop-header .shopping-cart-link {
+  margin-top: 1rem;
+}
+
 .shop-header .logo-link:hover,
 .shop-header .shopping-cart-link:hover {
   text-decoration: none;
