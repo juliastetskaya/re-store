@@ -44,6 +44,8 @@ const updateOrder = (state, bookId, quantity) => {
   const newItem = updateItem(book, cartItem, quantity);
   const newCart = updateCartItems(cartItems, newItem, itemIndex);
 
+  localStorage.setItem('cart', JSON.stringify(newCart));
+
   return {
     orderTotal: updateOrderTotal(newCart),
     cartItems: newCart,
@@ -52,10 +54,16 @@ const updateOrder = (state, bookId, quantity) => {
 
 const updateShoppingCart = (state, action) => {
   if (!state) {
-    return {
-      cartItems: [],
-      orderTotal: 0,
-    };
+    const cartFromLocalStorage = localStorage.getItem('cart');
+
+    if (cartFromLocalStorage) {
+      const cart = JSON.parse(cartFromLocalStorage);
+      console.log(cartFromLocalStorage);
+      return {
+        cartItems: cart,
+        orderTotal: updateOrderTotal(cart),
+      };
+    }
   }
 
   switch (action.type) {
@@ -69,6 +77,7 @@ const updateShoppingCart = (state, action) => {
 
     case 'ALL_BOOKS_REMOVED_FROM_CART': {
       const newCart = state.shoppingCart.cartItems.filter(({ id }) => id !== action.payload);
+      localStorage.setItem('cart', JSON.stringify(newCart));
 
       return {
         orderTotal: updateOrderTotal(newCart),
