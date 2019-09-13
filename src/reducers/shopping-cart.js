@@ -24,13 +24,14 @@ const updateItem = (book, item = {}, quantity) => {
   } = item;
 
   const newCount = count + quantity;
-  const newTotal = total + book.price * quantity;
+  const bookPrice = book ? book.price : total / count;
+  const newTotal = total + bookPrice * quantity;
 
   return {
     id,
     title,
     count: newCount > 1 ? newCount : 1,
-    total: newTotal > book.price ? newTotal : book.price,
+    total: newTotal > bookPrice ? newTotal : bookPrice,
   };
 };
 
@@ -64,6 +65,11 @@ const updateShoppingCart = (state, action) => {
         orderTotal: updateOrderTotal(cart),
       };
     }
+
+    return {
+      cartItems: [],
+      orderTotal: 0,
+    };
   }
 
   switch (action.type) {
